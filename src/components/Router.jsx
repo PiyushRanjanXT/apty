@@ -1,14 +1,19 @@
 import React from 'react'
-import {Route,Routes} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import PostContainer from './PostContainer';
+import AuthenticatedRoute, { isLogin } from './AuthenticatedRoute';
+import Login from './Login';
 
 export const Router = () => {
     return (
-        <Routes>
-            {/* <AuthenticatedRoute path="/post" element={ <PostContainer />} /> */}
-            <Route path="/post" element={ <PostContainer />} />  
-            <Route path="/test" element={ <h1>hello</h1>} />
+        <Switch>
+            <AuthenticatedRoute path="/" exact  >
+                <PostContainer />
+            </AuthenticatedRoute>
+            {!isLogin() && (<Route path="/login" >
+                <Login />
+            </Route>)}
 
-        </Routes>
+        </Switch>
     )
 }

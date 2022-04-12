@@ -1,16 +1,20 @@
-// import React from "react";
-// import { Navigate, Route, useLocation } from "react-router-dom";
-// import jsCookie from "js-cookie";
-// const AuthenticatedRoute = ({ element: Component, ...rest }) => {
-//   const location = useLocation();
+import React from "react";
+import { Redirect, Route, useLocation } from "react-router-dom";
+import jsCookie from "js-cookie";
 
-//   return (
-//     {
-//         jsCookie.get('login') === 'true' 
-//         ?(<Route {...rest} element={<Component />} />)
-//         :(<Navigate to="/" replace />)
-//     }
-//   );
-// };
+export const isLogin = () => jsCookie.get('login') === 'true';
 
-// export default AuthenticatedRoute;
+const AuthenticatedRoute = ({ children, ...rest }) => {
+    const location = useLocation();
+
+    return (
+        <Route {...rest}>
+            {isLogin()
+                ? children
+                : <Redirect to={{ pathname: "/login", state: { from: location } }} />
+            }
+        </Route>
+    );
+};
+
+export default AuthenticatedRoute;

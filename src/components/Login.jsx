@@ -7,16 +7,29 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
 import jsCookie from 'js-cookie';
+import { useHistory } from "react-router-dom";
 
 
-const Login = ({isOpen, onLogin, error}) => {
+const Login = () => {
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+    const history = useHistory();
+
+    const handleLogin = () => {
+        if (userName === 'admin' && password === 'admin') {
+          jsCookie.set('login', true);
+          setError(null);
+          history.push("/");
+        } else {
+            setError('Please enter correct username and password');
+        }
+      }
     
 
   return (
-    <Dialog open={isOpen} >
+    <Dialog open={true} >
     <DialogTitle>login</DialogTitle>
     <DialogContent>
         {error && <Alert variant='standard' color='error'>{error}</Alert>}
@@ -44,7 +57,7 @@ const Login = ({isOpen, onLogin, error}) => {
       />
     </DialogContent>
     <DialogActions>
-      <Button onClick={()=>onLogin(userName,password)}>Login</Button>
+      <Button onClick={handleLogin}>Login</Button>
     </DialogActions>
   </Dialog>
   )
